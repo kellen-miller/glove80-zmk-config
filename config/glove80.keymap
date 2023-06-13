@@ -36,6 +36,8 @@
             tapping-term-ms = <200>;
             bindings = <&mo 1>, <&to 1>;
         };
+        
+        
     };
 
     macros {
@@ -115,7 +117,7 @@
       &none     &kp N9    &kp N3  &kp N1  &kp N5  &kp N7                                                              &kp N6    &kp N2     &kp N0    &kp N4     &kp N8   &none
       &none      &kp J     &kp F   &kp M   &kp P   &kp V                                                               &none   &kp DOT  &kp COMMA   &kp DQT    &kp SQT   &none
       &none      &kp R     &kp S   &kp N   &kp D   &kp W                                                               &none     &kp A      &kp E     &kp I      &kp H   &none
-      &none      &kp X     &kp G   &kp L   &kp C   &kp B  &kp RSHFT  &kp TAB    &lower   &kp ESC   &kp BSPC    &to 3   &none     &kp U      &kp O     &kp Y      &kp K   &none
+      &none      &kp X     &kp G   &kp L   &kp C   &kp B  &kp RSHFT  &kp TAB    &lower   &kp ESC   &kp BSPC    &mo 3   &none     &kp U      &kp O     &kp Y      &kp K   &none
  &magic 2 0  &kp LCTRL  &kp LALT   &kp Z   &kp Q          &kp LSHFT    &kp T  &kp LGUI  &kp RALT  &kp SPACE  &kp RET          &kp LPAR   &kp RPAR  &kp LALT  &kp RCTRL   &none
             >;
         };
