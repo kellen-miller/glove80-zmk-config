@@ -1,1 +1,6 @@
 *~
+
+# Local firmware source and build artifacts.
+/src/
+/combined
+/_build/
