@@ -1,37 +1,46 @@
-# MoErgo Glove80 Custom Configuration for ZMK
+# Glove80: Enthium v14 for macOS
 
-![MoErgo Logo](moergo_logo.png)
+Full [Glorious Engrammer v52](https://github.com/sunaku/glove80-keymaps/releases/tag/v52)
+with [Enthium v14](https://github.com/sunaku/enthium/releases/tag/v14), configured
+for macOS. Replaces the previous four-layer custom layout.
 
-This repo is the official ZMK configuration of the MoErgo Glove80 wireless split contoured keyboard. Use it to develop your own keymap and easily build your own ZMK firmware to run on your Glove80.
+Imported from `sunaku/glove80-keymaps` commit
+`d857d0a5fec0883e721230bac27db2fc9f81c93e` (v52 plus two fixes).
 
-**NOTE: You can also customize the layout of your Glove80 keyboard with the Glove80 Layout Editor webapp. For most users Glove80 Layout Editor is the recommended and simpler option. More information is available at the official MoErgo Glove80 Support site (see resources below).**
+- Base layout: Enthium v14, including right-thumb R and left-thumb Space.
+- macOS shortcuts and CAGS home-row modifiers: Control, Option, Command, Shift
+  from pinky to index, mirrored on the right hand.
+- Upstream timing defaults; bilateral home-row modifiers enabled.
+- All 32 upstream layers, including Dvorak, Colemak, QWERTY, and Factory.
+- Mouse keys enabled; standard RGB support. Per-key layer RGB is optional and
+  requires the compatible firmware and configuration described upstream.
+- Shift, space, and thumb forgiveness and natural scrolling remain disabled.
 
-These steps will get you using your keymap on your keyboard in the fastest time possible. It uses the GitHub Actions feature to build your firmware online.
+The [upstream guide](https://github.com/sunaku/glove80-keymaps/tree/d857d0a5fec0883e721230bac27db2fc9f81c93e#guide)
+explains the layers, thumb combinations, and timing options. The
+[layer diagrams](https://github.com/sunaku/glove80-keymaps/blob/d857d0a5fec0883e721230bac27db2fc9f81c93e/README/all-layer-diagrams.pdf)
+show every key. Hold Magic and tap the left thumb T3 key to toggle Factory.
 
-If you are looking to dig deeper into ZMK and develop new functionality, it is recommended to follow the steps of installing ZMK as found on the official ZMK documentation site (linked below).
+`config/glove80.keymap` is the firmware build input. `config/glove80.conf` enables
+pointing support. `config/keymap.json` is the matching MoErgo Layout Editor
+export; keep its bindings and custom behaviors synchronized with the keymap.
+`config/info.json` describes physical key positions, not the active layout.
 
-## Resources
-- The [official MoErgo Glove80 Support](https://moergo.com/glove80-support) web site. Glove80 documentation and other technical resources.
-- The [official MoErgo Discord Server](https://moergo.com/discord). Instant conversations with other Glove80 users.
+Push a branch or open a pull request to run the existing **Build** workflow.
+It builds both halves against `moergo-sc/zmk` main, combines their firmware,
+and uploads the `glove80.uf2` artifact. A passing build does not flash the keyboard.
 
-- The [official ZMK Documentation](https://zmk.dev/docs) web site. Find the answers to many of your questions about ZMK Firmware.
-- The [official ZMK Discord Server](https://discord.gg/8cfMkQksSB). Instant conversations with other ZMK developers and users. Great technical resource!
+For a local build, clone `moergo-sc/zmk` into `src` and run
+`nix-build config -o combined`; the output is `combined/glove80.uf2`.
 
-- The [official Glove80 ZMK Distribution](https://github.com/moergo-sc/zmk). Repositiory for ZMK firmware customized for Glove80. 
- 
-## Instructions
-1. Log into, or sign up for, your personal GitHub account.
-2. Create your own repository using this repository as a template ([instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template])) and check it out on your local computer.
-3. Edit the keymap file(s) to suit your needs
-4. Commit and push your changes to your personal repo. Upon pushing it, GitHub Actions will start building a new version of your firmware with the updated keymap.
+Download the build artifact, then follow
+[MoErgo's flashing instructions](https://docs.moergo.com/glove80-user-guide/customizing-key-layout/#loading-new-zmk-firmware-onto-your-glove80).
+When changing firmware versions, flash both halves and follow MoErgo's
+configuration reset and re-pairing instructions. Choose a short filename such
+as `glove80.uf2` when copying firmware from macOS.
 
-## Firmware Files
-To locate your firmware files and reflash your Glove80...
-1. log into GitHub and navigate to your personal config repository you just uploaded your keymap changes to.
-2. Click "Actions" in the main navigation, and in the left navigation click the "Build" link.
-3. Select the desired workflow run in the centre area of the page (based on date and time of the build you wish to use). You can also start a new build from this page by clicking the "Run workflow" button.
-4. After clicking the desired workflow run, you should be presented with a section at the bottom of the page called "Artifacts". This section contains the results of your build, in a file called "glove80.uf2"
-5. Download the glove80.uf2
-6. Flash the firmware to Glove80 according to the user documentation on the official Glove80 Glove80 Support website (linked above)
+Unicode/Emoji macros on macOS need the Unicode Hex Input source described in
+the upstream guide; ordinary typing and shortcuts use your normal US input source.
 
-Your keyboard is now ready to use.
+The imported keymap is covered by [Sunaku's ISC license](config/LICENSE.sunaku);
+the original repository files retain their existing license.
