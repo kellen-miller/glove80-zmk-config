@@ -6,8 +6,21 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
+  changes:
+    uses: kellen-miller/ci/.github/workflows/changed-paths.yaml@f01aacda5b78c7b67d1dc840bd0432be852a69a4
+    with:
+      filters: |
+        {"validation": ["config/**", ".gitmodules", "src/**", "*.nix", "flake.lock", "shell.nix", "nix/**", ".github/workflows/**", ".github/actions/**"]}
+
   build:
+    needs: changes
+    if: >-
+      ${{ !cancelled() && (needs.changes.result != 'success' ||
+          fromJSON(needs.changes.outputs.changes).validation) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
