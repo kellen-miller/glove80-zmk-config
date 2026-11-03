@@ -47,7 +47,7 @@ the original repository files retain their existing license.
 
 ## Automatic upstream updates
 
-A Rust maintenance job polls stable GitHub releases daily at 13:23 UTC, or on
+A Rust maintenance job polls stable GitHub releases on the first of each month at 13:23 UTC, or on
 manual dispatch. Cross-repository releases cannot directly trigger this repo's
 `release` event. Drafts/prereleases and non-`v<number>` tags are excluded; a
 release older than the lock fails instead of downgrading. With no new release,
@@ -79,7 +79,7 @@ release PRs to publish.
 
 The bot owns `chore/upstream-keymap-releases`: do not edit that branch manually.
 It maintains one review PR and replaces its generated outputs when newer
-releases arrive. Identical pending outputs are skipped, avoiding daily firmware
+releases arrive. Identical pending outputs are skipped, avoiding repeated firmware
 rebuilds. Merging and flashing remain manual. Schedule activation requires this
 workflow on the default branch; run failures appear in Actions.
 

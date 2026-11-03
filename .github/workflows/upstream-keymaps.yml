@@ -2,7 +2,7 @@ name: Update upstream keymaps
 
 on:
   schedule:
-    - cron: '23 13 * * *'
+    - cron: '23 13 1 * *'
   workflow_dispatch:
 
 permissions:
