@@ -26,7 +26,7 @@ pointing support. `config/keymap.json` is the matching MoErgo Layout Editor
 export; keep its bindings and custom behaviors synchronized with the keymap.
 `config/info.json` describes physical key positions, not the active layout.
 
-Push a branch or open a pull request to run the existing **Build** workflow.
+Open a pull request to run the **Build** workflow.
 It builds both halves against `moergo-sc/zmk` main, combines their firmware,
 and uploads the `glove80.uf2` artifact. A passing build does not flash the keyboard.
 
