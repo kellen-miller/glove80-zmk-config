@@ -90,7 +90,8 @@ fn enthium_keys(source: &str) -> Result<BTreeMap<String, String>> {
         source.contains("xkb_symbols \"enthium\""),
         "unsupported Enthium XKB structure"
     );
-    let pattern = Regex::new(r"key\s+<([A-Z0-9]+)>\s*\{\s*\[\s*([A-Za-z_]+)\s*[,\]]")?;
+    let pattern =
+        Regex::new(r"key\s+<([A-Z0-9]+)>\s*\{\s*\[\s*([A-Za-z_]+)(?:\s*,\s*([A-Za-z_]+))?\s*\]")?;
     let mut mapped = BTreeMap::new();
     for capture in pattern.captures_iter(source) {
         let zmk = match &capture[2] {
@@ -105,6 +106,21 @@ fn enthium_keys(source: &str) -> Result<BTreeMap<String, String>> {
             key if key.len() == 1 && key.as_bytes()[0].is_ascii_lowercase() => key,
             key => anyhow::bail!("unsupported Enthium keysym {key}"),
         };
+        let shifted = match &capture[2] {
+            "apostrophe" => "quotedbl".to_owned(),
+            "comma" => "less".to_owned(),
+            "period" => "greater".to_owned(),
+            "semicolon" => "colon".to_owned(),
+            "slash" => "question".to_owned(),
+            "equal" => "plus".to_owned(),
+            "minus" => "underscore".to_owned(),
+            letter => letter.to_uppercase(),
+        };
+        ensure!(
+            capture.get(3).map(|value| value.as_str()) == Some(shifted.as_str()),
+            "unsupported shifted Enthium symbol at {}",
+            &capture[1]
+        );
         ensure!(
             mapped
                 .insert(capture[1].to_owned(), zmk.to_uppercase())
@@ -451,7 +467,7 @@ fn main() -> Result<()> {
         };
         let expected_key = replacement.to_uppercase();
         let expected_define = format!("#define KEY_LH_C5R3 {expected_key}");
-        let pattern = Regex::new(r"(key\s+<AD01>\s*\{\s*\[\s*)[a-z]+(\s*,)")?;
+        let pattern = Regex::new(r"(key\s+<AD01>\s*\{\s*\[\s*)[a-z]+(\s*,\s*)[A-Z]+")?;
         ensure!(
             pattern.is_match(&xkb),
             "independent-update fixture requires an AD01 letter"
@@ -459,7 +475,7 @@ fn main() -> Result<()> {
         fs::write(
             &xkb_path,
             pattern
-                .replace(&xkb, format!("${{1}}{replacement}${{2}}"))
+                .replace(&xkb, format!("${{1}}{replacement}${{2}}{expected_key}"))
                 .as_ref(),
         )?;
         let (changed, changed_firmware) = regenerate(&root, &upstream, &enthium)?;
@@ -512,8 +528,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn rejects_unsupported_enthium_syntax() {
-        assert!(enthium_keys("(defsrc q) (deflayer enthium (tap-hold q w))").is_err());
+    fn rejects_unsupported_shifted_symbol() {
+        let error =
+            enthium_keys("xkb_symbols \"enthium\" { key <AD01> { [ q, X ] }; };").unwrap_err();
+        assert!(
+            error
+                .to_string()
+                .contains("unsupported shifted Enthium symbol")
+        );
     }
 
     #[test]
