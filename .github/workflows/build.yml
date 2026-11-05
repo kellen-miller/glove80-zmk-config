@@ -1,16 +1,16 @@
-name: Build
+name: Glove80 firmware
 
 on: [pull_request]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ 'Build' }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  changes:
+  firmware-paths:
     runs-on: ubuntu-latest
     outputs:
       changes: ${{ steps.paths.outputs.changes }}
@@ -25,11 +25,12 @@ jobs:
           filters: |
             {"validation": ["config/**", ".gitmodules", "src/**", "*.nix", "flake.lock", "shell.nix", "nix/**", ".github/workflows/**", ".github/actions/**"]}
 
-  build:
-    needs: changes
+    name: Keymap inputs
+  firmware-build:
+    needs: firmware-paths
     if: >-
-      ${{ !cancelled() && (needs.changes.result != 'success' ||
-          fromJSON(needs.changes.outputs.changes).validation) }}
+      ${{ !cancelled() && (needs.firmware-paths.result != 'success' ||
+          fromJSON(needs.firmware-paths.outputs.changes).validation) }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -60,3 +61,4 @@ jobs:
           retention-days: 7
           path: glove80.uf2
           if-no-files-found: error
+    name: Combined firmware build

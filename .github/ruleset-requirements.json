@@ -1,5 +1,5 @@
 {
   "checks": [
-    "build"
+    "Combined firmware build"
   ]
 }

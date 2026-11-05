@@ -1,4 +1,4 @@
-name: Validate upstream updater
+name: Upstream keymap updater
 
 on:
   pull_request:
@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  updater-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -25,3 +25,5 @@ jobs:
       - run: cargo test --locked --manifest-path updater/Cargo.toml
       - name: Verify locked generation and independent Enthium changes
         run: cargo run --locked --manifest-path updater/Cargo.toml -- check
+    name: >-
+      Formatting, static analysis, tests and generation validation
