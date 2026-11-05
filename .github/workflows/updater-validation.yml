@@ -26,4 +26,4 @@ jobs:
       - name: Verify locked generation and independent Enthium changes
         run: cargo run --locked --manifest-path updater/Cargo.toml -- check
     name: >-
-      Upstream keymap updater / Formatting, static analysis, tests and generation validation
+      Formatting, static analysis, tests and generation validation

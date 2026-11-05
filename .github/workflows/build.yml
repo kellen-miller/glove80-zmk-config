@@ -25,7 +25,7 @@ jobs:
           filters: |
             {"validation": ["config/**", ".gitmodules", "src/**", "*.nix", "flake.lock", "shell.nix", "nix/**", ".github/workflows/**", ".github/actions/**"]}
 
-    name: Glove80 firmware / Changed paths
+    name: Glove80 firmware source changes
   firmware-build:
     needs: firmware-paths
     if: >-
@@ -61,4 +61,4 @@ jobs:
           retention-days: 7
           path: glove80.uf2
           if-no-files-found: error
-    name: Glove80 firmware / Combined firmware build
+    name: Combined firmware build
