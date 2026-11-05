@@ -25,7 +25,7 @@ jobs:
           filters: |
             {"validation": ["config/**", ".gitmodules", "src/**", "*.nix", "flake.lock", "shell.nix", "nix/**", ".github/workflows/**", ".github/actions/**"]}
 
-    name: Glove80 firmware source changes
+    name: Keymap inputs
   firmware-build:
     needs: firmware-paths
     if: >-
